@@ -208,6 +208,12 @@ RUN apt-get update \
             libcap2-bin \
  && rm -rf /var/lib/apt/lists/*
 
+# Add ssl-cert group support
+RUN apt-get install -y \
+            ssl-cert
+
+RUN usermod -a -G ssl-cert nobody
+
 USER nobody:nogroup
 
 EXPOSE 3478 3478/udp 5349 5349/udp

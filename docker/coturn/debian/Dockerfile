@@ -191,16 +191,17 @@ RUN apt-get update \
  # Install `dig` tool for `detect-external-ip.sh`.
  && apt-get install -y --no-install-recommends --no-install-suggests \
             dnsutils \
+ # Install 'ssl-cert' package for ssl-cert group support.
+ && apt-get install -y --no-install-recommends --no-install-suggests \
+            ssl-cert \
  # Cleanup unnecessary stuff.
  && rm -rf /var/lib/apt/lists/*
 
 # Install Coturn distribution.
 COPY --from=dist-coturn /out/ /
 
-# Add ssl-cert group support and add user nobody to ssl-cert group
-RUN apt-get install -y \
-            ssl-cert \
- && usermod -a -G ssl-cert nobody
+# Add user ssl-cert to group nobody
+RUN usermod -a -G ssl-cert nobody
 
 # Allow non-root using privileged ports.
 RUN apt-get update \
